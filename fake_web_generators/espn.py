@@ -309,7 +309,12 @@ class Event:
         '''
         
         return dict(
-            event_id=self.user.get('uuid'),
+            visitor_id=self.user.get('uuid'),
+            visitor_ip_address=self.user.get('ip_address'),
+            visitor_os_name=self.user.get('os_name'),
+            visitor_os_version=self.user.get('os_version'),
+            visitor_browser_name=self.user.get('browser_name'),
+            visitor_browser_user_agent=self.user.get('browswer_user_agent'),
             session_id=self.session_id,
             event_timestamp=self.current_timestamp.strftime('%Y-%m-%d %H:%M:%S.%f'),
             event_type='pageview',
