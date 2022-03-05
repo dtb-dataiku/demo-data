@@ -18,6 +18,7 @@ class User:
     browser_name: str = None
     browser_user_agent: str = None
     user_league_favorite: str = None
+    user_subscriber: str = None
         
     def to_dict(self) -> dict:
         '''
@@ -32,7 +33,8 @@ class User:
             os_version=self.os_version,
             browser_name=self.browser_name,
             browser_user_agent=self.browser_user_agent,
-            user_league_favorite=self.user_league_favorite
+            user_league_favorite=self.user_league_favorite,
+            user_subscriber=self.user_subscriber
         )
 
 
@@ -89,6 +91,10 @@ class UserMaker(Faker):
                 'ufc': 0.20,
                 'mlb': 0.12,
                 'mls': 0.05
+            },
+            'subscriber': {
+                'y': 0.10,
+                'n': 0.90
             }
         }
         
@@ -152,6 +158,16 @@ class UserMaker(Faker):
         
         return random.choices(favorites, weights=weights)[0]
     
+    def __pick_subscriber__(self) -> str:
+        '''
+        Randomly pick an operating systems
+        '''
+        
+        subscribers = list(self.settings.get('subscriber').keys())
+        weights = list(self.settings.get('subscriber').values())
+        
+        return random.choices(subscribers, weights=weights)[0]
+    
     def get_users(self, count) -> list:
         '''
         Return a list of generated users
@@ -169,6 +185,7 @@ class UserMaker(Faker):
             user.browser_name = self.__pick_browser__(user.os_name)
             user.browser_user_agent = self.__pick_browser_user_agent__(user.browser_name)
             user.user_league_favorite = self.__pick_league_favorite__()
+            user.user_subscriber = self.__pick_subscriber__()
             
             users.append(user.to_dict())
             
